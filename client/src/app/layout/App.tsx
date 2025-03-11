@@ -8,9 +8,8 @@ function App() {
   const [tasks, setTasks] = useState<Tasks[]>([])
 
   useEffect(() => {
-    axios.get<Tasks[]>('http://localhost:5276/api/tasks', { timeout: 5000 })
+    axios.get<Tasks[]>('http://localhost:5276/api/tasks')
       .then(response => setTasks(response.data))
-      .catch(error => console.error("Error fetching tasks:", error));
   }, [])
 
   return (
