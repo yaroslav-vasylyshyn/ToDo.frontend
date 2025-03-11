@@ -24,13 +24,15 @@ export default function Taskcard({ task }: Props) {
             <Typography className="task-name"> {task.name} </Typography>
             <Typography className="task-date"> Created at: {formattedDateTime} </Typography>
             <Typography className="task-description"> {task.description} </Typography>
-            <div className={`task-status ${statusClasses[task.status]}`}>
-                {task.status}
-            </div>
-            <div>
+            <div className="task-footer">
+                <div className={`task-status ${statusClasses[task.status]}`}>
+                    {task.status}
+                </div>
+
                 <EditOutlined className="edit-btn" />
                 <DeleteOutlined className="delete-btn" />
             </div>
+
         </Card>
     );
 }
