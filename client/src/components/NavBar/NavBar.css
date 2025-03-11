@@ -18,6 +18,7 @@
 .add-task-button {
   background-color: #4B0082;
   border-color: aliceblue;
+  color: #ececec;
 }
 
 .add-task-button:hover {

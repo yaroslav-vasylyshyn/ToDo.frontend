@@ -1,22 +1,32 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Navbar from "../../components/NavBar/Navbar"
-import axios from "axios"
-import TasksDashboard from "../../features/tasks/TasksDashboard"
 import "./styles.css"
+import TaskForm from "../../components/Dashboard/TaskForm"
+import Modal from "../../components/Dashboard/Modal"
+import { Typography } from "antd"
+import TasksDashboard from "../../components/Dashboard/TasksDashboard"
+import { useTasks } from "../../hooks/useTasks"
 
 function App() {
-  const [tasks, setTasks] = useState<Tasks[]>([])
+  const [createTaskForm, setCreateTaskForm] = useState(false)
+  const { tasks, isPending} = useTasks()
 
-  useEffect(() => {
-    axios.get<Tasks[]>('http://localhost:5276/api/tasks')
-      .then(response => setTasks(response.data))
-  }, [])
+  const handleOpenCreateForm = () => {
+    setCreateTaskForm(true)
+  }
+
+  const handleCloseCreateForm = () => {
+    setCreateTaskForm(false)
+  }
 
   return (
     <>
-      <Navbar />
+      <Navbar createForm={handleOpenCreateForm} />
       <div className="dashboard">
-        <TasksDashboard tasks={tasks} />
+        {!tasks || isPending ? <Typography> Loading...</Typography> : <TasksDashboard tasks={tasks} />}
+      </div>
+      <div>
+      {createTaskForm && ( <Modal onClose={handleCloseCreateForm}> <TaskForm onClose={handleCloseCreateForm}/> </Modal>)}
       </div>
     </>
   )

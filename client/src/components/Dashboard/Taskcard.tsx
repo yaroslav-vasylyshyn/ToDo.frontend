@@ -1,5 +1,6 @@
 import { Card, Typography } from "antd";
 import './taskStyle.css';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 type Props = {
     task: Tasks;
@@ -25,6 +26,10 @@ export default function Taskcard({ task }: Props) {
             <Typography className="task-description"> {task.description} </Typography>
             <div className={`task-status ${statusClasses[task.status]}`}>
                 {task.status}
+            </div>
+            <div>
+                <EditOutlined className="edit-btn" />
+                <DeleteOutlined className="delete-btn" />
             </div>
         </Card>
     );

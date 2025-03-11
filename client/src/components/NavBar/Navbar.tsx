@@ -4,7 +4,11 @@ import './Navbar.css';
 
 const { Header } = Layout;
 
-const Navbar = () => {
+type Props = {
+  createForm: () => void
+}
+
+const Navbar = ({createForm}: Props) => {
   return (
     <Header className="navbar-header">
       <div className="navbar-content">
@@ -12,7 +16,7 @@ const Navbar = () => {
           To Do App
         </div>
 
-        <Button type="primary" className="add-task-button">
+        <Button className="add-task-button" onClick={createForm}>
           Add Task
         </Button>
       </div>
