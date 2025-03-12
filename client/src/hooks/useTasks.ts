@@ -36,8 +36,13 @@ export const useTasks = () => {
     });
 
     const deleteTask = useMutation({
-        mutationFn: async ({ id }: { id: string }) => {
-            await agent.delete(`/api/tasks/${id}`);
+        mutationFn: async ({ id }: { id: number }) => {
+            await agent.delete(`/tasks/${id}`);
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['tasks'],
+            });
         }
     });
     

@@ -1,6 +1,7 @@
 import { Card, Typography } from "antd";
 import './taskStyle.css';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useTasks } from "../../hooks/useTasks";
 
 type Props = {
     task: Tasks
@@ -14,7 +15,16 @@ const statusClasses: Record<string, string> = {
 };
 
 export default function Taskcard({ task, updateForm }: Props) {
+    const { deleteTask } = useTasks()
     const dateObj = new Date(task.createdAt);
+
+    const handleDelete = async () => {
+        try {
+            await deleteTask.mutateAsync({ id: task.id })
+        } catch (error) {
+            console.log("Error deleting task:", error); 
+        }
+    };
 
     const formattedDateTime =
         `${String(dateObj.getDate()).padStart(2, '0')}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${dateObj.getFullYear()}
@@ -31,7 +41,7 @@ export default function Taskcard({ task, updateForm }: Props) {
                 </div>
 
                 <EditOutlined className="edit-btn" onClick={() => updateForm(task)} />
-                <DeleteOutlined className="delete-btn" />
+                <DeleteOutlined className="delete-btn" onClick={handleDelete}/>
             </div>
 
         </Card>
