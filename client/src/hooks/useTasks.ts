@@ -23,9 +23,31 @@ export const useTasks = () => {
         }
     })
 
+    const updateTask = useMutation({
+        mutationFn: async (task: any) => {
+            const { name, description, createdAt, status } = task;
+            await agent.put(`tasks/${task.id}`, { name, description, createdAt, status });
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks"]
+            });
+        }
+    });
+
+    const deleteTask = useMutation({
+        mutationFn: async ({ id }: { id: string }) => {
+            await agent.delete(`/api/tasks/${id}`);
+        }
+    });
+    
+    
+
     return{
         tasks,
         isPending,
-        createTask
+        createTask,
+        updateTask,
+        deleteTask
     }
 }

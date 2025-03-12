@@ -3,7 +3,8 @@ import './taskStyle.css';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 type Props = {
-    task: Tasks;
+    task: Tasks
+    updateForm: (task: Tasks) => void
 };
 
 const statusClasses: Record<string, string> = {
@@ -12,7 +13,7 @@ const statusClasses: Record<string, string> = {
     "Done": "status-done",
 };
 
-export default function Taskcard({ task }: Props) {
+export default function Taskcard({ task, updateForm }: Props) {
     const dateObj = new Date(task.createdAt);
 
     const formattedDateTime =
@@ -29,7 +30,7 @@ export default function Taskcard({ task }: Props) {
                     {task.status}
                 </div>
 
-                <EditOutlined className="edit-btn" />
+                <EditOutlined className="edit-btn" onClick={() => updateForm(task)} />
                 <DeleteOutlined className="delete-btn" />
             </div>
 
