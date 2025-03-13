@@ -1,14 +1,11 @@
 import { Layout, Button } from 'antd';
 import 'antd/dist/reset.css';
 import './Navbar.css';
+import taskStore from '../../stores/TasksStore';
 
 const { Header } = Layout;
 
-type Props = {
-  createForm: () => void
-}
-
-const Navbar = ({createForm}: Props) => {
+const Navbar = () => {
   return (
     <Header className="navbar-header">
       <div className="navbar-content">
@@ -16,7 +13,7 @@ const Navbar = ({createForm}: Props) => {
           To Do App
         </div>
 
-        <Button className="add-task-button" onClick={createForm}>
+        <Button className="add-task-button" onClick={() => taskStore.selectCreateAction()}>
           Add Task
         </Button>
       </div>

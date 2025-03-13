@@ -7,46 +7,30 @@ import { Typography } from "antd"
 import TasksDashboard from "../../components/Dashboard/TasksDashboard"
 import { useTasks } from "../../hooks/useTasks"
 import TaskUpdateForm from "../../components/Dashboard/TaskUpdateForm"
+import { observer } from "mobx-react-lite";
+import { useTaskStore } from "../../stores/store";
 
-function App() {
-  const [createTaskForm, setCreateTaskForm] = useState(false)
-  const [updateTaskForm, setUpdateTaskForm] = useState(false)
-  const [selectedTask, setSelectedTask] = useState<Tasks | null>(null);
-
+const App = observer(() => {
+  const taskStore = useTaskStore();
   const { tasks, isPending } = useTasks()
-
-  const handleOpenCreateForm = () => {
-    setCreateTaskForm(true)
-  }
-
-  const handleCloseCreateForm = () => {
-    setCreateTaskForm(false)
-  }
-
-  const handleOpenUpdateForm = (task: Tasks) => {
-    setSelectedTask(task)
-    setUpdateTaskForm(true)
-  }
-
-  const handleCloseUpdateForm = () => {
-    setSelectedTask(null);
-    setUpdateTaskForm(false)
-  }
 
   return (
     <>
-      <Navbar createForm={handleOpenCreateForm} />
+      <Navbar />
       <div className="dashboard">
-        {!tasks || isPending ? <Typography> Loading...</Typography> : <TasksDashboard tasks={tasks} updateForm={handleOpenUpdateForm}/>}
+        {!tasks || isPending ? <Typography> Loading...</Typography> : <TasksDashboard tasks={tasks}/>}
       </div>
       <div>
-        {createTaskForm && (<Modal onClose={handleCloseCreateForm}> <TaskForm onClose={handleCloseCreateForm} /> </Modal>)}
+        {taskStore.selectedCreateAction && (<Modal onClose={() => taskStore.resetCreateAction()}> <TaskForm onClose={() => taskStore.resetCreateAction()} /> </Modal>)}
       </div>
       <div>
-        {updateTaskForm && selectedTask && (<Modal onClose={handleCloseUpdateForm}> <TaskUpdateForm onClose={handleCloseUpdateForm} task={selectedTask}/> </Modal>)}
+      {taskStore.selectedTask && (
+        <Modal onClose={() => taskStore.selectTask(null)}>
+          <TaskUpdateForm task={taskStore.selectedTask} onClose={() => taskStore.selectTask(null)} />
+        </Modal>)}
       </div>
     </>
   )
-}
+})
 
 export default App

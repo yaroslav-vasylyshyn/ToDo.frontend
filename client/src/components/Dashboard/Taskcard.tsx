@@ -2,10 +2,11 @@ import { Card, Typography } from "antd";
 import './taskStyle.css';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useTasks } from "../../hooks/useTasks";
+import { useTaskStore } from "../../stores/store";
+import { observer } from "mobx-react-lite";
 
 type Props = {
     task: Tasks
-    updateForm: (task: Tasks) => void
 };
 
 const statusClasses: Record<string, string> = {
@@ -14,7 +15,8 @@ const statusClasses: Record<string, string> = {
     "Done": "status-done",
 };
 
-export default function Taskcard({ task, updateForm }: Props) {
+const Taskcard = observer(({ task }: Props) => {
+    const taskStore = useTaskStore();
     const { deleteTask } = useTasks()
     const dateObj = new Date(task.createdAt);
 
@@ -24,6 +26,10 @@ export default function Taskcard({ task, updateForm }: Props) {
         } catch (error) {
             console.log("Error deleting task:", error); 
         }
+    };
+
+    const handleEdit = () => {
+        taskStore.selectTask(task);
     };
 
     const formattedDateTime =
@@ -40,10 +46,12 @@ export default function Taskcard({ task, updateForm }: Props) {
                     {task.status}
                 </div>
 
-                <EditOutlined className="edit-btn" onClick={() => updateForm(task)} />
+                <EditOutlined className="edit-btn" onClick={handleEdit} />
                 <DeleteOutlined className="delete-btn" onClick={handleDelete}/>
             </div>
 
         </Card>
     );
-}
+})
+
+export default Taskcard;
