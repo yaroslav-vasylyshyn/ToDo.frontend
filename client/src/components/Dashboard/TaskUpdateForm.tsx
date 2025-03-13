@@ -48,7 +48,7 @@ export default function TaskForm({ task, onClose }: Props) {
                     name="description"
                     rules={[{ required: true, message: "Please enter a description" },
                             { min: 2, message: "Task description must be at least 2 characters long" },
-                            { max: 255, message: "Task description cannot be more than 500 characters long" }]}
+                            { max: 500, message: "Task description cannot be more than 500 characters long" }]}
                 >
                     <Input.TextArea rows={4} placeholder="Enter task description" />
                 </Form.Item>

@@ -2,6 +2,7 @@ import { Layout, Button } from 'antd';
 import 'antd/dist/reset.css';
 import './Navbar.css';
 import taskStore from '../../stores/TasksStore';
+import StatusFilter from './StatusFilter';
 
 const { Header } = Layout;
 
@@ -12,7 +13,7 @@ const Navbar = () => {
         <div className="logo">
           To Do App
         </div>
-
+        <StatusFilter />
         <Button className="add-task-button" onClick={() => taskStore.selectCreateAction()}>
           Add Task
         </Button>

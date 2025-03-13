@@ -1,13 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
+import { useTaskStore } from "../stores/store";
 
 export const useTasks = () => {
+    const tasksStore = useTaskStore()
     const queryClient = useQueryClient()
 
     const { data: tasks, isPending } = useQuery({
-        queryKey: ['tasks'],
+        queryKey: ['tasks', tasksStore.selectedStatus],
         queryFn: async () => {
-            const response = await agent.get<Tasks[]>('/tasks');
+            let url = '/tasks'
+            if (tasksStore.selectedStatus !== 'All'){
+                url += `?status=${tasksStore.selectedStatus}`;
+            }
+            const response = await agent.get<Tasks[]>(url);
             return response.data;
         }
     })
