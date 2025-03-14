@@ -1,26 +1,35 @@
-import { useEffect, useState } from "react"
 import Navbar from "../../components/NavBar/Navbar"
-import axios from "axios"
-import TasksDashboard from "../../features/tasks/TasksDashboard"
 import "./styles.css"
+import TaskForm from "../../components/Dashboard/TaskForm"
+import Modal from "../../components/Dashboard/Modal"
+import TasksDashboard from "../../components/Dashboard/TasksDashboard"
+import TaskUpdateForm from "../../components/Dashboard/TaskUpdateForm"
+import { Typography } from "antd"
+import { useTasks } from "../../hooks/useTasks"
+import { observer } from "mobx-react-lite";
+import { useTaskStore } from "../../stores/store";
 
-function App() {
-  const [tasks, setTasks] = useState<Tasks[]>([])
-
-  useEffect(() => {
-    axios.get<Tasks[]>('http://localhost:5276/api/tasks', { timeout: 5000 })
-      .then(response => setTasks(response.data))
-      .catch(error => console.error("Error fetching tasks:", error));
-  }, [])
+const App = observer(() => {
+  const taskStore = useTaskStore();
+  const { tasks, isPending } = useTasks()
 
   return (
     <>
       <Navbar />
       <div className="dashboard">
-        <TasksDashboard tasks={tasks} />
+        {!tasks || isPending ? <Typography> Loading...</Typography> : <TasksDashboard tasks={tasks}/>}
+      </div>
+      <div>
+        {taskStore.selectedCreateAction && (<Modal onClose={() => taskStore.resetCreateAction()}> <TaskForm onClose={() => taskStore.resetCreateAction()} /> </Modal>)}
+      </div>
+      <div>
+      {taskStore.selectedTask && (
+        <Modal onClose={() => taskStore.selectTask(null)}>
+          <TaskUpdateForm task={taskStore.selectedTask} onClose={() => taskStore.selectTask(null)} />
+        </Modal>)}
       </div>
     </>
   )
-}
+})
 
 export default App

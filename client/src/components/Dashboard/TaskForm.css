@@ -1,0 +1,24 @@
+.submit-btn {
+    background-color: #4B0082;
+    color: aliceblue;
+}
+
+.submit-btn:hover {
+    background-color: #701cab !important;
+    border-color: aliceblue;
+}
+
+.form-main-div .ant-form-item {
+    text-align: center;
+}
+
+.form-main-div .ant-btn {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.edit-btn{
+    position: absolute;
+    bottom: 5;
+    right: 5;
+}

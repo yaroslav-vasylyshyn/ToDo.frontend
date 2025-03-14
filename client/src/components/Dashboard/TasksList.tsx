@@ -1,4 +1,4 @@
-import Taskcard from './Taskcard';
+import TaskCard from './Taskcard';
 import './taskStyle.css';
 
 type Props = {
@@ -10,7 +10,7 @@ export default function TasksList({ tasks }: Props) {
     return (
         <div className="tasks-list">
             {tasks.map(task => {
-                return <Taskcard key={task.id} task={task} />
+                return <TaskCard key={task.id} task={task} />
             })}
         </div>
     )
